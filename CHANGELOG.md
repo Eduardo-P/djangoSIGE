@@ -1,194 +1,194 @@
 # Changelog
 
-Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
+Todas las mudanzas notables de este proyecto serán documentadas en este archivo.
 
-O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
-e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
+El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/),
+y este proyecto se adhiere al [Versionamiento Semántico](https://semver.org/lang/es-ES/).
 
-## [Unreleased]
+## [No lanzado]
 
-### Changed
+### Cambiado
 
-- **Menu lateral reorganizado (#109).** Bloco `.user-info` compactado
-  (avatar 36px à esquerda + nome/email à direita, no lugar dos 135px
-  fixos com avatar grande); rodapé `.legal` centralizado; `.menu`
-  passa a usar `flex: 1 1 auto` em vez de altura fixa de 450px que
-  sobrava ou estourava conforme a tela. Chevron do dropdown do
-  usuário reposicionado no canto direito da linha (sem sobrepor o
-  nome) e elevado para `z-index: 9999` para abrir acima dos itens
-  do menu. Todas as mudanças vivem num bloco isolado no final de
-  `djangosige/static/css/style.css`; o HTML do `base.html` continua
+- **Menú lateral reorganizado (#109).** Bloque `.user-info` compactado
+  (avatar 36px a la izquierda + nombre/email a la derecha, en lugar de los 135px
+  fijos con avatar grande); pie de página `.legal` centrado; `.menu`
+  ahora usa `flex: 1 1 auto` en vez de altura fija de 450px que
+  sobraba o estallaba según la pantalla. Chevron del desplegable del
+  usuario reposicionado en la esquina derecha de la línea (sin superponer el
+  nombre) y elevado a `z-index: 9999` para abrir por encima de los elementos
+  del menú. Todos los cambios viven en un bloque aislado al final de
+  `djangosige/static/css/style.css`; el HTML de `base.html` continúa
   intacto.
-- **Geração de PDF migrada de `geraldo` para [WeasyPrint](https://weasyprint.org/)
-  (#142).** Reports do `geraldo` (`report_vendas.py`, `report_compras.py`,
-  baseados em `ReportBand`/`SubReport` posicionados em centímetros) foram
-  substituídos por um único template HTML/CSS reaproveitável em
-  `djangosige/apps/base/templates/base/pdf/relatorio_documento.html`. As
-  views `GerarPDFVenda`/`GerarPDFCompra` agora renderizam o template via
-  `render_to_string()` e geram o PDF com `weasyprint.HTML(...).write_pdf()`.
-  Dependências de sistema do WeasyPrint (`libpango-1.0-0`, `libpangoft2-1.0-0`,
+- **Generación de PDF migrada de `geraldo` a [WeasyPrint](https://weasyprint.org/)
+  (#142).** Reports de `geraldo` (`report_vendas.py`, `report_compras.py`,
+  basados en `ReportBand`/`SubReport` posicionados en centímetros) fueron
+  sustituidos por una única plantilla HTML/CSS reutilizable en
+  `djangosige/apps/base/templates/base/pdf/relatorio_documento.html`. Las
+  vistas `GerarPDFVenda`/`GerarPDFCompra` ahora renderizan la plantilla vía
+  `render_to_string()` y generan el PDF con `weasyprint.HTML(...).write_pdf()`.
+  Dependencias de sistema de WeasyPrint (`libpango-1.0-0`, `libpangoft2-1.0-0`,
   `libcairo2`, `libgdk-pixbuf-2.0-0`, `libharfbuzz0b`, `libfontconfig1`)
-  adicionadas ao `Dockerfile`. Os 4 testes que estavam marcados como
-  `@unittest.skip` por causa do geraldo foram reabilitados.
-- Bumps de dependências:
-  - `dj-database-url` 0.5.0 → 3.1.2 (cinco anos de bumps acumulados).
-  - `python-decouple` 3.1 → 3.8 (API do `Csv()` mantida).
-  - `flake8` (dev) 3.6.0 → 7.3.0, com `pyflakes`, `pycodestyle` e
-    `mccabe` correspondentes.
-  - `asgiref`, `sqlparse`, `pillow` já estavam no patch mais recente
-    compatível.
-- `requirements.txt` agora é gerado via `uv export` (sincronizado com
+  añadidas al `Dockerfile`. Los 4 tests que estaban marcados como
+  `@unittest.skip` a causa de geraldo fueron rehabilitados.
+- Actualizaciones de dependencias:
+  - `dj-database-url` 0.5.0 → 3.1.2 (cinco años de actualizaciones acumuladas).
+  - `python-decouple` 3.1 → 3.8 (API del `Csv()` mantenida).
+  - `flake8` (dev) 3.6.0 → 7.3.0, con `pyflakes`, `pycodestyle` y
+    `mccabe` correspondientes.
+  - `asgiref`, `sqlparse`, `pillow` ya estaban en el parche más reciente
+    compatible.
+- `requirements.txt` ahora es generado vía `uv export` (sincronizado con
   `uv.lock`).
-- `pyproject.toml` reorganizado em três grupos comentados: stack de
-  NFe (pinada em versões antigas, ver nota abaixo), PDF (WeasyPrint) e
-  runtime geral. Pins explícitos de `future`, `six`, `eight` e `pytz`
-  removidos — continuam disponíveis como deps transitivas.
-- `mock` removido das deps de dev (não havia uso nos testes — Python 3
-  traz `unittest.mock` builtin).
-- Afrouxa constraints de `lxml` (`>=4.9,<5` — teto necessário porque
-  `signxml==2.5.2` exige `lxml<5`) e `reportlab` (`>=4.5`). Sem efeito
-  em versões instaladas no momento; permite patches futuros sem
-  alteração no `pyproject`.
-- Constraint do `Django` afrouxada para `>=5.2,<5.3` (linha LTS).
-  Versão instalada continua `5.2.14`. Bump para 6.x fica para rodada
-  separada após validação.
-- Python atualizado de 3.10 para 3.12 (`.python-version`, `pyproject`
-  e `Dockerfile`). Bump para 3.13 ficou bloqueado pelo conflito entre
-  `lxml<5` (exigido por `signxml==2.5.2`, parte do stack pinado de
-  NFe) e o fato de `lxml 4.x` não compilar com a API do CPython 3.13.
-  Stack validado em container Docker (rebuild da imagem com
-  `python:3.12-slim`, smoke test em `/login/`, `/` e `/static/*`
-  retornando OK).
-- README atualizado: seção "Dependências" reflete Python 3.12, Django
-  5.2 LTS, uv como gerenciador recomendado, PostgreSQL 18 (Docker),
-  WeasyPrint como gerador de PDF e nota sobre o pin do stack de NFe.
-- Substituído `locale.format()` (removido no Python 3.12) por
-  `locale.format_string()` em 68 ocorrências (apps de vendas, compras,
-  estoque, financeiro e testes). Assinatura idêntica, sem mudança de
-  comportamento.
-- `requirements.txt` passa a ser gerado via `uv export`, sincronizado
-  com `uv.lock`.
-- `djangosige.__init__.__version__` passa a `'2.0'` (estava em `'0.0.1'`,
-  desalinhado com a release v2.0.0). Template `base.html` volta a usar
-  `{{versao}}` (context processor `sige_version` já existente).
+- `pyproject.toml` reorganizado en tres grupos comentados: stack de
+  NFe (anclada en versiones antiguas, ver nota abajo), PDF (WeasyPrint) y
+  runtime general. Anclajes explícitos de `future`, `six`, `eight` y `pytz`
+  eliminados — continúan disponibles como deps transitivas.
+- `mock` eliminado de las deps de dev (no había uso en los tests — Python 3
+  trae `unittest.mock` incorporado).
+- Se aflojan constraints de `lxml` (`>=4.9,<5` — techo necesario porque
+  `signxml==2.5.2` exige `lxml<5`) y `reportlab` (`>=4.5`). Sin efecto
+  en versiones instaladas en el momento; permite parches futuros sin
+  alteración en el `pyproject`.
+- Constraint de `Django` aflojada a `>=5.2,<5.3` (línea LTS).
+  Versión instalada continúa `5.2.14`. El salto a 6.x queda para una ronda
+  separada tras validación.
+- Python actualizado de 3.10 a 3.12 (`.python-version`, `pyproject`
+  y `Dockerfile`). El salto a 3.13 quedó bloqueado por el conflicto entre
+  `lxml<5` (exigido por `signxml==2.5.2`, parte del stack anclado de NFe)
+  y el hecho de que `lxml 4.x` no compila con la API de CPython 3.13.
+  Stack validado en contenedor Docker (reconstrucción de la imagen con
+  `python:3.12-slim`, smoke test en `/login/`, `/` y `/static/*`
+  devolviendo OK).
+- README actualizado: sección "Dependencias" refleja Python 3.12, Django
+  5.2 LTS, uv como gestor recomendado, PostgreSQL 18 (Docker),
+  WeasyPrint como generador de PDF y nota sobre el anclaje del stack de NFe.
+- Sustituido `locale.format()` (eliminado en Python 3.12) por
+  `locale.format_string()` en 68 ocurrencias (apps de ventas, compras,
+  stock, financiero y tests). Firma idéntica, sin cambio de
+  comportamiento.
+- `requirements.txt` pasa a ser generado vía `uv export`, sincronizado
+  con `uv.lock`.
+- `djangosige.__init__.__version__` pasa a `'2.0'` (estaba en `'0.0.1'`,
+  desalineado con el lanzamiento v2.0.0). Plantilla `base.html` vuelve a usar
+  `{{versao}}` (context processor `sige_version` ya existente).
 
-### Fixed
+### Corregido
 
-- **Segurança: 8 views AJAX `Info*` passavam pelo Django sem checagem
-  de permissão (#143, HIGH).** `InfoCliente`, `InfoFornecedor`,
+- **Seguridad: 8 vistas AJAX `Info*` pasaban por Django sin verificación
+  de permiso (#143, ALTA).** `InfoCliente`, `InfoFornecedor`,
   `InfoEmpresa`, `InfoTransportadora`, `InfoProduto`, `InfoVenda`,
-  `InfoCompra` e `InfoCondicaoPagamento` herdavam de
-  `django.views.generic.View` em vez de `CustomView`, bypassando o
-  `CheckPermissionMixin`. Qualquer usuário autenticado conseguia ler
-  dados sensíveis (CPF, CNPJ, RG, endereços, preços, condições de
-  pagamento) só com o id do registro. Cada view agora herda de
-  `CustomView` e exige a permissão `view_<modelo>` correspondente.
-  Regressão coberta por `djangosige/tests/test_security_ajax_views.py`
-  (8 testes). Demais achados da issue (state-changing via GET,
-  bulk-delete sem ownership check) seguem em aberto.
-- **Importação de NF-e v4.0 quebrava com `NOT NULL constraint failed:
-  fiscal_notafiscal.dhemi` (#122).** Quando o XML não trazia `<dhEmi>`
-  legível, o `pysignfe` devolvia `None` para `nfe.infNFe.ide.dhEmi.valor`
-  e o `save()` da `NotaFiscalSaida`/`NotaFiscalEntrada` violava o NOT
-  NULL. Em `processador_nf.py`, ambos `importar_xml_cliente` e
-  `importar_xml_fornecedor` agora caem para `datetime.now()` quando o
-  valor do XML for ausente — mesmo fallback que já era usado no caminho
-  de criação manual da nota. Testes de regressão em
+  `InfoCompra` e `InfoCondicaoPagamento` heredaban de
+  `django.views.generic.View` en lugar de `CustomView`, saltándose el
+  `CheckPermissionMixin`. Cualquier usuario autenticado podía leer
+  datos sensibles (CPF, CNPJ, RG, direcciones, precios, condiciones de
+  pago) solo con el id del registro. Cada vista ahora hereda de
+  `CustomView` y exige el permiso `view_<modelo>` correspondiente.
+  Regresión cubierta por `djangosige/tests/test_security_ajax_views.py`
+  (8 tests). Otros hallazgos del issue (state-changing via GET,
+  bulk-delete sin verificación de propiedad) siguen abiertos.
+- **Importación de NF-e v4.0 se rompía con `NOT NULL constraint failed:
+  fiscal_notafiscal.dhemi` (#122).** Cuando el XML no traía `<dhEmi>`
+  legible, `pysignfe` devolvía `None` para `nfe.infNFe.ide.dhEmi.valor`
+  y el `save()` de `NotaFiscalSaida`/`NotaFiscalEntrada` violaba el NOT
+  NULL. En `processador_nf.py`, tanto `importar_xml_cliente` como
+  `importar_xml_fornecedor` ahora caen a `datetime.now()` cuando el
+  valor del XML está ausente — el mismo fallback que ya se usaba en la
+  ruta de creación manual de la nota. Tests de regresión en
   `djangosige/tests/fiscal/test_processador_nf.py`.
 {% raw %}
-- Templates de listagem usavam `{% ifequal %}` / `{% endifequal %}`,
-  tags removidas no Django 4.0. As 5 ocorrências
+- Las plantillas de listado usaban `{% ifequal %}` / `{% endifequal %}`,
+  tags eliminadas en Django 4.0. Las 5 ocurrencias
   (`cliente_list_table.html`, `fornecedor_list_table.html`,
   ...
-  foram substituídas por `{% if A == B %}…{% endif %}`.
+  fueron sustituidas por `{% if A == B %}…{% endif %}`.
 {% endraw %}
-- Login retornava `403 Forbidden (Origin checking failed)` sob proxy
-  reverso (`nginx` em `8000:80` → `gunicorn`). Adicionado
-  `CSRF_TRUSTED_ORIGINS` no `settings.py` (lido via `decouple`) e a env
-  `CSRF_TRUSTED_ORIGINS=http://localhost:8000,http://127.0.0.1:8000` no
+- Login devolvía `403 Forbidden (Origin checking failed)` bajo proxy
+  inverso (`nginx` en `8000:80` → `gunicorn`). Se añadió
+  `CSRF_TRUSTED_ORIGINS` en `settings.py` (leído vía `decouple`) y la env
+  `CSRF_TRUSTED_ORIGINS=http://localhost:8000,http://127.0.0.1:8000` en
   `docker-compose.yml`.
-- Rodapé do template `base/base.html`: ano `2017` → `2026` e versão
-  (antes era o placeholder `{{versao}}` que renderizava vazio por falta
+- Pie de página de la plantilla `base/base.html`: año `2017` → `2026` y versión
+  (antes era el placeholder `{{versao}}` que renderizaba vacío por falta
   de context processor) → `2.0`.
 
-### Changed
+### Cambiado
 
-- README ganhou seção "Comandos úteis" do Docker com exemplos de
-  `docker exec -it`, `docker compose logs -f --tail=N` e atalhos
-  (`ps`, `restart`, `down`). Inclui nota explícita sobre a ordem das
-  flags `-it` (precisam vir antes do nome do container).
+- README ganó sección "Comandos útiles" de Docker con ejemplos de
+  `docker exec -it`, `docker compose logs -f --tail=N` y atajos
+  (`ps`, `restart`, `down`). Incluye nota explícita sobre el orden de las
+  flags `-it` (deben venir antes del nombre del contenedor).
 
-### Added
+### Añadido
 
-- `database/` adicionado ao `.gitignore`. O volume do postgres é criado
-  como `root` pelo container e fazia `git status` emitir `Permissão
-  negada` em todo comando.
+- `database/` añadido al `.gitignore`. El volumen de postgres es creado
+  como `root` por el contenedor y hacía que `git status` emitiera `Permiso
+  denegado` en cada comando.
 
 ## [2.0.0] - 2026-05-23
 
-Modernização da infraestrutura de build e execução. A aplicação em si não
-mudou — esta release foca em como instalar, rodar e empacotar o projeto.
+Modernización de la infraestructura de construcción y ejecución. La aplicación en sí no
+cambió — este lanzamiento se centra en cómo instalar, ejecutar y empaquetar el proyecto.
 
-### Added
+### Añadido
 
-- `uv` como gerenciador de dependências (`pyproject.toml`, `uv.lock`,
-  `.python-version`), mantendo `requirements.txt` em paralelo para quem
-  preferir `pip`.
-- `.dockerignore` excluindo `.git`, `.venv`, `database/` e configs locais
-  de ferramentas (`.claude/`, `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`).
-- Rede dedicada `sige_net` no `docker-compose.yml`.
-- Healthcheck do Postgres com `depends_on: service_healthy` no serviço
-  `gunicorn`, garantindo ordem correta de inicialização.
+- `uv` como gestor de dependencias (`pyproject.toml`, `uv.lock`,
+  `.python-version`), manteniendo `requirements.txt` en paralelo para quien
+  prefiera `pip`.
+- `.dockerignore` excluyendo `.git`, `.venv`, `database/` y configs locales
+  de herramientas (`.claude/`, `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`).
+- Red dedicada `sige_net` en `docker-compose.yml`.
+- Healthcheck de Postgres con `depends_on: service_healthy` en el servicio
+  `gunicorn`, garantizando orden correcta de inicialización.
 
-### Changed
+### Cambiado
 
-- Imagem Docker migrada de `alpine:3.7` para `python:3.10-slim`, com
-  dependências instaladas via `uv` em `/opt/venv` (evita ser mascarado
-  pelo bind mount do `docker-compose`).
-- Postgres atualizado para `postgres:18-alpine`. Ponto de mount ajustado
-  para `/var/lib/postgresql` (novo padrão com subdirs versionados).
-- Serviço `gunicorn` agora usa `build: .` em vez de imagem pré-existente.
-- `ALLOWED_HOSTS` expandido para incluir `nginx`, `localhost` e
+- Imagen Docker migrada de `alpine:3.7` a `python:3.10-slim`, con
+  dependencias instaladas vía `uv` en `/opt/venv` (evita ser enmascarado
+  por el bind mount de `docker-compose`).
+- Postgres actualizado a `postgres:18-alpine`. Punto de montaje ajustado
+  a `/var/lib/postgresql` (nuevo estándar con subdirectorios versionados).
+- Servicio `gunicorn` ahora usa `build: .` en lugar de imagen preexistente.
+- `ALLOWED_HOSTS` expandido para incluir `nginx`, `localhost` y
   `127.0.0.1`.
-- `nginx` exposto em `8000:80` (em vez de `80:80`) para evitar conflito
-  com portas privilegiadas.
-- `MAINTAINER` (deprecado) substituído por `LABEL maintainer`.
-- `.gitignore` passa a ignorar configs locais de assistentes de código
+- `nginx` expuesto en `8000:80` (en lugar de `80:80`) para evitar conflicto
+  con puertos privilegiados.
+- `MAINTAINER` (deprecado) sustituido por `LABEL maintainer`.
+- `.gitignore` pasa a ignorar configs locales de asistentes de código
   (`CLAUDE.md`, `.claude/`, `AGENTS.md`, `GEMINI.md`, `.cursor*`,
   `.aider*`, `docs/superpowers/`).
 
-### Removed
+### Eliminado
 
-- Atributos legados do `docker-compose.yml`: chave `version:` (obsoleta no
-  Compose v2) e `links:` (substituídos por rede dedicada).
+- Atributos legados de `docker-compose.yml`: clave `version:` (obsoleta en
+  Compose v2) y `links:` (sustituidos por red dedicada).
 
 ## [1.1.0] - 2026-05-22
 
-Baseline pré-modernização. Esta entrada consolida o estado do djangoSIGE
-acumulado em 164 commits anteriores até o ajuste de compatibilidade com
+Línea base pre-modernización. Esta entrada consolida el estado de djangoSIGE
+acumulado en 164 commits anteriores hasta el ajuste de compatibilidad con
 Django 5.x.
 
-### Funcionalidades principais
+### Funcionalidades principales
 
-- Cadastros: clientes, fornecedores, transportadoras, produtos e
+- Registros: clientes, proveedores, transportistas, productos y
   empresas.
-- Autenticação: login/logout, perfil por usuário, controle de
-  permissões.
-- Orçamentos e pedidos de compra/venda com geração de PDF
+- Autenticación: login/logout, perfil por usuario, control de
+  permisos.
+- Presupuestos y pedidos de compra/venta con generación de PDF
   ([geraldo](https://github.com/thiagopena/geraldo)).
-- Módulo financeiro: plano de contas, fluxo de caixa e lançamentos.
-- Módulo de estoque.
-- Módulo fiscal: emissão de NF-e/NFC-e versão 4.0, validação de XML,
-  download, consulta, cancelamento e manifestação do destinatário;
-  comunicação com a SEFAZ via [PySIGNFe](https://github.com/thiagopena/PySIGNFe).
-- Interface em português.
+- Módulo financiero: plan de cuentas, flujo de caja y asientos.
+- Módulo de stock.
+- Módulo fiscal: emisión de NF-e/NFC-e versión 4.0, validación de XML,
+  descarga, consulta, cancelación y manifestación del destinatario;
+  comunicación con SEFAZ vía [PySIGNFe](https://github.com/thiagopena/PySIGNFe).
+- Interfaz en portugués.
 
 ### Stack
 
 - Python 3.10+
 - Django 5.2.14
-- Suporte a SQLite (dev) e Postgres (produção).
+- Soporte a SQLite (dev) y Postgres (producción).
 
-[Unreleased]: https://github.com/thiagopena/djangoSIGE/compare/v2.0.0...HEAD
+[No lanzado]: https://github.com/thiagopena/djangoSIGE/compare/v2.0.0...HEAD
 [2.0.0]: https://github.com/thiagopena/djangoSIGE/compare/v1.1.0...v2.0.0
 [1.1.0]: https://github.com/thiagopena/djangoSIGE/releases/tag/v1.1.0
