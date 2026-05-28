@@ -1,21 +1,21 @@
 # DjangoSIGE [![Build Status](https://travis-ci.org/thiagopena/djangoSIGE.svg?branch=master)](https://travis-ci.org/thiagopena/djangoSIGE)
 
-Sistema Integrado de Gestão Empresarial baseado em Django
+Sistema Integrado de Gestión Empresarial basado en Django
 
-Projeto independente open-source desenvolvido em Python 3 no Windows, testado no GNU/Linux e Windows.
+Proyecto independiente open-source desarrollado en Python 3 en Windows, probado en GNU/Linux y Windows.
 
-## Dependências
+## Dependencias
 
-- [Python](https://www.python.org/downloads/) — 3.12 (definido em `.python-version` e `pyproject.toml`)
-- [Django](http://www.djangoproject.com) — 5.2.x (linha LTS, `>=5.2,<5.3`)
-- [PostgreSQL](https://www.postgresql.org/) — 18 (via Docker) ou compatível
-- [uv](https://docs.astral.sh/uv/) (recomendado) — gerencia o ambiente e as dependências a partir de `pyproject.toml` / `uv.lock`
-- [WeasyPrint](https://weasyprint.org/) — geração de PDF a partir de templates HTML/CSS (substitui o `geraldo`, ver issue [#142](https://github.com/thiagopena/djangoSIGE/issues/142)). Em Linux exige as libs `libpango-1.0-0`, `libcairo2`, `libgdk-pixbuf-2.0-0`, `libharfbuzz0b` e `libfontconfig1` — o `Dockerfile` já as instala.
-- [PySIGNFe](https://github.com/thiagopena/PySIGNFe) (opcional) — geração de NF-e/NFC-e, comunicação com a SEFAZ, DANFE. Mantém pinadas as versões antigas de `cryptography==2.9.2`, `pyOpenSSL==17.5.0` e `signxml==2.5.2`, sem as quais a emissão quebra.
-- [apache2](https://www.apache.org/) + [mod_wsgi](https://modwsgi.readthedocs.io/en/develop/) (opcional, alternativo ao Docker)
+- [Python](https://www.python.org/downloads/) — 3.12 (definido en `.python-version` y `pyproject.toml`)
+- [Django](http://www.djangoproject.com) — 5.2.x (línea LTS, `>=5.2,<5.3`)
+- [PostgreSQL](https://www.postgresql.org/) — 18 (vía Docker) o compatible
+- [uv](https://docs.astral.sh/uv/) (recomendado) — gestiona el entorno y las dependencias a partir de `pyproject.toml` / `uv.lock`
+- [WeasyPrint](https://weasyprint.org/) — generación de PDF a partir de plantillas HTML/CSS (sustituye a `geraldo`, ver issue [#142](https://github.com/thiagopena/djangoSIGE/issues/142)). En Linux exige las librerías `libpango-1.0-0`, `libcairo2`, `libgdk-pixbuf-2.0-0`, `libharfbuzz0b` y `libfontconfig1` — el `Dockerfile` ya las instala.
+- [PySIGNFe](https://github.com/thiagopena/PySIGNFe) (opcional) — generación de NF-e/NFC-e, comunicación con SEFAZ, DANFE. Mantiene ancladas las versiones antiguas de `cryptography==2.9.2`, `pyOpenSSL==17.5.0` y `signxml==2.5.2`, sin las cuales la emisión se rompe.
+- [apache2](https://www.apache.org/) + [mod_wsgi](https://modwsgi.readthedocs.io/en/develop/) (opcional, alternativo a Docker)
 
 
-## Screenshots
+## Capturas de pantalla
 
 ### Login
 
@@ -26,25 +26,25 @@ Projeto independente open-source desenvolvido em Python 3 no Windows, testado no
 ![](img/dashboard.png)
 
 
-## Instalação
+## Instalación
 
-1. Clone o repositório:
+1. Clone el repositorio:
 
 ```bash
 git clone https://github.com/thiagopena/djangoSIGE.git
 cd djangoSIGE
 ```
 
-### Opção A — uv (recomendado)
+### Opción A — uv (recomendado)
 
-[uv](https://docs.astral.sh/uv/) cria o ambiente virtual e instala as
-dependências a partir do `pyproject.toml`/`uv.lock` em um único passo,
-fixando a versão do Python definida em `.python-version`. Em **Linux** e
-**Windows** você não precisa instalar nada previamente (nem o Python) —
-o próprio `uv` baixa o interpretador e resolve as dependências a partir
-de wheels pré-compilados.
+[uv](https://docs.astral.sh/uv/) crea el entorno virtual e instala las
+dependencias a partir del `pyproject.toml`/`uv.lock` en un solo paso,
+fijando la versión de Python definida en `.python-version`. En **Linux** y
+**Windows** no necesita instalar nada previamente (ni el Python) —
+el propio `uv` descarga el intérprete y resuelve las dependencias a partir
+de ruedas precompiladas.
 
-Instale o `uv` (ver [documentação oficial](https://docs.astral.sh/uv/getting-started/installation/)):
+Instale `uv` (ver [documentación oficial](https://docs.astral.sh/uv/getting-started/installation/)):
 
 ```bash
 # Linux / macOS
@@ -56,13 +56,13 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-Sincronize as dependências (cria `.venv` automaticamente):
+Sincronice las dependencias (crea `.venv` automáticamente):
 
 ```bash
 uv sync
 ```
 
-A partir daqui, prefixe os comandos `manage.py` com `uv run`:
+A partir de aquí, anteceda los comandos `manage.py` com `uv run`:
 
 ```bash
 uv run python contrib/env_gen.py
@@ -71,10 +71,10 @@ uv run python manage.py createsuperuser
 uv run python manage.py runserver
 ```
 
-### Opção B — pip + venv (alternativa)
+### Opción B — pip + venv (alternativa)
 
-**Pré-requisitos no Linux** (Debian/Ubuntu) — necessários para compilar
-extensões nativas (`lxml`, `cryptography`):
+**Requisitos previos en Linux** (Debian/Ubuntu) — necesarios para compilar
+extensiones nativas (`lxml`, `cryptography`):
 
 ```bash
 sudo apt install -y libxml2 gcc python3-dev libxml2-dev libxslt1-dev zlib1g-dev git
@@ -83,17 +83,17 @@ sudo apt update
 sudo apt install -y python3.12 python3.12-venv python3.12-dev
 ```
 
-**Pré-requisitos no Windows:**
+**Requisitos previos en Windows:**
 
-- Instale o [Python 3.12](https://www.python.org/downloads/) (marque
-  *Add Python to PATH* durante o instalador).
-- Instale o [Git para Windows](https://git-scm.com/download/win).
-- Algumas dependências nativas (`lxml`, `cryptography==2.9.2`) podem
-  exigir o [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
-  caso o `pip` não encontre um wheel pronto. Se possível, prefira a
-  Opção A (uv), que evita esse passo.
+- Instale [Python 3.12](https://www.python.org/downloads/) (marque
+  *Add Python to PATH* durante el instalador).
+- Instale [Git para Windows](https://git-scm.com/download/win).
+- Algunas dependencias nativas (`lxml`, `cryptography==2.9.2`) pueden
+  exigir [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
+  en caso de que `pip` no encuentre una rueda lista. Si es posible, prefiera la
+  Opción A (uv), que evita este paso.
 
-**Criar o ambiente:**
+**Crear el entorno:**
 
 ```bash
 # Linux / macOS
@@ -109,7 +109,7 @@ py -3.12 -m venv .venv
 pip install -r requirements.txt
 ```
 
-Em seguida, com o `.venv` ativado:
+A continuación, con el `.venv` activado:
 
 ```bash
 python contrib/env_gen.py
@@ -118,16 +118,16 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-### Pós-instalação (ambas as opções)
+### Post-instalación (ambas opciones)
 
-2. Edite o conteúdo do arquivo **djangosige/configs/configs.py**.
+2. Edite el contenido del archivo **djangosige/configs/configs.py**.
 
-3. Acesse `http://localhost:8000` no navegador.
+3. Acceda a `http://localhost:8000` en el navegador.
 
-### Popular o banco com dados de exemplo (opcional)
+### Poblar la base de datos con datos de ejemplo (opcional)
 
-O comando `create_data` popula o banco com dados realistas em português
-(locale `pt_BR`, com CPF/CNPJ válidos gerados pelo
+El comando `create_data` popula la base de datos con datos realistas en portugués
+(locale `pt_BR`, com CPF/CNPJ válidos generados por
 [Faker](https://faker.readthedocs.io/)):
 
 ```bash
@@ -141,34 +141,34 @@ python manage.py create_data
 docker compose exec gunicorn python manage.py create_data
 ```
 
-#### O que é populado
+#### Que se puebla
 
 | App        | Modelo / tabela            | Default | Observações                                                          |
 |------------|----------------------------|--------:|----------------------------------------------------------------------|
-| auth       | `User`                     |       3 | Usuários comuns (senha `senha123`). Superusers/staff são preservados.|
-| login      | `Usuario`                  |       3 | Perfil 1:1 ligado a cada `User` recém-criado.                        |
+| auth       | `User`                     |       3 | Usuarios comunes (contraseña `senha123`). Superusers/staff se preservan.|
+| login      | `Usuario`                  |       3 | Perfil 1:1 ligado a cada `User` recién creado.                        |
 | cadastro   | `Empresa` (+ `PessoaJuridica`) | 2   | CNPJ, nome fantasia, CNAE, regime tributário.                        |
-| cadastro   | `Cliente` (+ `PessoaFisica`/`PessoaJuridica`) | 15 | Mistura PF/PJ aleatória, com `limite_de_credito`.       |
-| cadastro   | `Fornecedor` (+ `PessoaJuridica`) | 8 | Sempre PJ, com ramo de atividade.                                    |
-| cadastro   | `Transportadora` (+ `PessoaJuridica`) | 3 | Sempre PJ.                                                       |
-| cadastro   | `Endereco`, `Telefone`, `Email`, `Banco` | 1 por pessoa | Criados e amarrados como `_padrao` de cada pessoa.       |
-| cadastro   | `Produto`                  |      25 | Código sequencial `PRD00001…`, EAN13, NCM, custo/venda coerentes.    |
-| cadastro   | `Categoria`, `Marca`, `Unidade` | fixo (8/8/6) | Conjunto fixo via `get_or_create` — nunca duplica.           |
+| cadastro   | `Cliente` (+ `PessoaFisica`/`PessoaJuridica`) | 15 | Mezcla PF/PJ aleatoria, con `limite_de_credito`.       |
+| cadastro   | `Fornecedor` (+ `PessoaJuridica`) | 8 | Siempre PJ, con ramo de actividad.                                    |
+| cadastro   | `Transportadora` (+ `PessoaJuridica`) | 3 | Siempre PJ.                                                       |
+| cadastro   | `Endereco`, `Telefone`, `Email`, `Banco` | 1 por pessoa | Creados y vinculados como `_padrao` de cada persona.       |
+| cadastro   | `Produto`                  |      25 | Código secuencial `PRD00001…`, EAN13, NCM, costo/venta coherentes.    |
+| cadastro   | `Categoria`, `Marca`, `Unidade` | fixo (8/8/6) | Conjunto fijo vía `get_or_create` — nunca duplica.           |
 
-Os módulos `vendas`, `compras`, `estoque`, `financeiro` e `fiscal` **não
-são populados** pelo comando (envolvem regras tributárias e workflows
-mais complexos).
+Los módulos `vendas`, `compras`, `estoque`, `financeiro` e `fiscal` **no
+se puebla** con el comando (implican reglas tributarias y flujos de trabajo
+más complejos).
 
 #### Flags
 
-- `--clear` — apaga todos os dados de exemplo antes de recriar
-  (preserva superusers e staff manualmente criados).
-- `--seed N` — fixa o seed do Faker para resultados reprodutíveis.
+- `--clear` — borra todos los datos de ejemplo antes de recrear
+(preserva superusers y staff creados manualmente).
+- `--seed N` — fija la semilla del Faker para resultados reproducibles.
 - `--clientes N`, `--fornecedores N`, `--produtos N`, `--empresas N`,
-  `--transportadoras N`, `--usuarios N` — ajusta cada quantidade
-  individualmente (ver `--help` para os defaults).
+  `--transportadoras N`, `--usuarios N` — ajusta cada cantidad
+individualmente (ver `--help` para los valores por defecto).
 
-Exemplo zerando o banco e gerando um conjunto maior:
+Ejemplo vaciando la base de datos y generando un conjunto mayor:
 
 ```bash
 docker compose exec gunicorn python manage.py create_data \
@@ -177,7 +177,7 @@ docker compose exec gunicorn python manage.py create_data \
 
 ### Docker (opcional)
 
-Há também um `docker-compose.yml` com Postgres 18, Gunicorn e Nginx:
+También hay un `docker-compose.yml` con Postgres 18, Gunicorn y Nginx:
 
 ```bash
 docker compose up -d
@@ -185,12 +185,12 @@ docker compose exec gunicorn python manage.py migrate
 docker compose exec gunicorn python manage.py createsuperuser
 ```
 
-A aplicação fica disponível em `http://localhost:8000`.
+La aplicación estará disponible en `http://localhost:8000`.
 
-#### Comandos úteis
+#### Comandos útiles
 
-Abrir um shell interativo dentro do container da aplicação (atenção: as
-flags `-it` precisam vir **antes** do nome do container):
+Abrir un shell interactivo dentro del contenedor de la aplicación (atención: las
+flags `-it` deben ir antes del nombre del contenedor):
 
 ```bash
 docker exec -it djangosige-gunicorn-1 bash
@@ -198,8 +198,8 @@ docker exec -it djangosige-gunicorn-1 bash
 docker compose exec gunicorn bash
 ```
 
-Acompanhar os logs em tempo real (`-f` = follow, `--tail=N` limita o
-backlog inicial):
+Seguir los logs en tiempo real (`-f` = follow, `--tail=N` limita el
+historial inicial):
 
 ```bash
 # todos os servicos
@@ -212,7 +212,7 @@ docker compose logs -f --tail=100 gunicorn
 docker logs -f djangosige-gunicorn-1
 ```
 
-Outros atalhos úteis:
+Otros atajos útiles:
 
 ```bash
 docker compose ps              # status dos containers
@@ -220,21 +220,21 @@ docker compose restart gunicorn
 docker compose down            # derruba o stack (preserva volumes)
 ```
 
-## Implementações
+## Implementaciones
 
-- Cadastro de produtos, clientes, empresas, fornecedores e transportadoras
+- Registro de productos, clientes, empresas, proveedores y transportistas
 - Login/Logout
-- Criação de perfil para cada usuário.
-- Definição de permissões para usuários.
-- Criação e geração de PDF para orçamentos e pedidos de compra/venda
-- Módulo financeiro (Plano de Contas, Fluxo de Caixa e Lançamentos)
-- Módulo para controle de estoque
+- Creación de perfil para cada usuario.
+- Definición de permisos para usuarios.
+- Creación y generación de PDF para presupuestos y pedidos de compra/venta
+- Módulo financiero (Plan de Cuentas, Flujo de Caja y Asientos)
+- Módulo para control de stock
 - Módulo fiscal:
-    - Geração e armazenamento de notas fiscais
-    - Validação do XML de NF-e/NFC-es
-    - Emissão, download, consulta e cancelamento de NF-e/NFC-es **(Testar em ambiente de homologação)**
-    - Comunicação com SEFAZ (Consulta de cadastro, inutilização de notas, manifestação do destinatário)
-- Interface simples e em português
+    - Generación y almacenamiento de notas fiscales
+    - Validación del XML de NF-e/NFC-e
+    - Emisión, descarga, consulta y cancelación de NF-e/NFC-e **(Probar en entorno de homologación)**
+    - Comunicación con SEFAZ (Consulta de registro, inutilización de notas, manifestación del destinatario)
+- Interfaz simple y en portugués
 
 ## Créditos
 
@@ -244,8 +244,8 @@ docker compose down            # derruba o stack (preserva volumes)
 - [DataTables](https://datatables.net/)
 - [JQuery multiselect](http://loudev.com/)
 
-## Ajuda
+## Ayuda
 
-Para relatar bugs ou fazer perguntas utilize o [Issues](https://github.com/thiagopena/djangoSIGE/issues) ou via email thiagopena01@gmail.com
+Para reportar bugs o hacer preguntas utilice el [Issues](https://github.com/thiagopena/djangoSIGE/issues) o vía email thiagopena01@gmail.com
 
-Como este é um projeto em desenvolvimento, qualquer feedback será bem-vindo.
+Como este es un proyecto en desarrollo, cualquier comentario será bienvenido.
